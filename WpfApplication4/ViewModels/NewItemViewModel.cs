@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using ReactiveUI;
 
 namespace WpfApplication4.ViewModels
@@ -13,14 +11,6 @@ namespace WpfApplication4.ViewModels
             IsEditing = true;
         }
 
-        public override string Name
-        {
-            get { return _Name; }
-            set
-            {
-                _Name = value;
-                this.RaiseAndSetIfChanged(x => x.Name, value);
-            }
-        }
+        public override string Name { get { return _Name; } set { this.RaiseAndSetIfChanged(x => x.Name, value); } }
     }
 }

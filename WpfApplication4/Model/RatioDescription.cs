@@ -23,9 +23,10 @@ namespace WpfApplication4.Model
 
         public static T ConvertTo<T>(this string json)
         {
-            var jObj = JsonObject.Parse(json);
+            var type = TypesImplementingInterface(typeof(T)).FirstOrDefault(o => PropertyAllMatched(o, json));
 
-            var type = TypesImplementingInterface(typeof(T)).FirstOrDefault(o => PropertyAllMatched(o, jObj));
+            if (type == null)
+                return default(T);
 
             var obj = typeof(StringExtensions)
                          .GetMethod("FromJson", BindingFlags.Static | BindingFlags.Public)
@@ -35,8 +36,13 @@ namespace WpfApplication4.Model
             return (T)obj;
         }
 
-        private static bool PropertyAllMatched(Type type, JsonObject obj)
+        private static bool PropertyAllMatched(Type type, string json)
         {
+            var obj = JsonObject.Parse(json);
+
+            if (obj == null)
+                return false;
+
             var a = type.GetProperties(BindingFlags.Public | BindingFlags.Instance).Select(o => o.Name).ToArray();
             var b = obj.Keys;
 
@@ -44,7 +50,7 @@ namespace WpfApplication4.Model
             return result;
         }
     }
-
+    
     public class RatioDescription : ReactiveObject, IEvaluationItemDescription
     {
         private string _Denominator;

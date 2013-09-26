@@ -23,10 +23,7 @@ namespace WpfApplication4.ViewModels
             Id = model.Id;
             _name = model.Name;
             StatisticalWay = model.StatisticalWay;
-
             Description = model.Description.ConvertTo<IEvaluationItemDescription>();
-            
-            
             var obsvr = Observer.Create<FormulaInfo>(o =>
             {
                 if (_updateValues == null)
