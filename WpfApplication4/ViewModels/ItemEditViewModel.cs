@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Reflection;
 using Grandsys.Wfm.Services.Outsource.ServiceModel;
 using ReactiveUI;
 using ServiceStack.Text;
@@ -23,7 +24,8 @@ namespace WpfApplication4.ViewModels
             _name = model.Name;
             StatisticalWay = model.StatisticalWay;
 
-            Description = model.Description.To();
+            Description = model.Description.ConvertTo<IEvaluationItemDescription>();
+            
             
             var obsvr = Observer.Create<FormulaInfo>(o =>
             {

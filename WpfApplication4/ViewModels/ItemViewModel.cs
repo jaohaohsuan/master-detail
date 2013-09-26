@@ -22,6 +22,8 @@ namespace WpfApplication4.ViewModels
 
         public string StatisticalWay { get; set; }
         public string Formula { get; set; }
+        public IFormulaParams FormulaParams { get; set; }
+
 
         public bool IsEditing
         {
@@ -63,7 +65,8 @@ namespace WpfApplication4.ViewModels
                 Id = model.Id,
                 Name = model.Name,
                 StatisticalWay = model.StatisticalWay,
-                Formula = model.Formula
+                Formula = model.Formula,
+                FormulaParams = model.FormulaParams.ConvertTo<IFormulaParams>()
             };
         }
 

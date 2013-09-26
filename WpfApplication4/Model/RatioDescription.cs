@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using ReactiveUI;
@@ -8,25 +7,32 @@ using ServiceStack.Text;
 
 namespace WpfApplication4.Model
 {
-    public interface IEvaluationItemDescription : INotifyPropertyChanged
+    public static class JsonToObjectExtensions
     {
-    }
-
-    public static class EvaluationItemDescription
-    {
-        public static IEvaluationItemDescription To(this string json)
+        /// <summary>
+        /// Returns all types in the current AppDomain implementing the interface or inheriting the type. 
+        /// </summary>
+        public static IEnumerable<Type> TypesImplementingInterface(Type desiredType)
         {
-            JsonObject jObj = JsonObject.Parse(json);
+            return AppDomain
+                   .CurrentDomain
+                   .GetAssemblies()
+                   .SelectMany(assembly => assembly.GetTypes())
+                   .Where(desiredType.IsAssignableFrom);
+        }
 
-            if (PropertyAllMatched(typeof (RatioDescription), jObj))
-            {
-                return json.FromJson<RatioDescription>();
-            }
-            if (PropertyAllMatched(typeof (PieceDescription), jObj))
-            {
-                return json.FromJson<PieceDescription>();
-            }
-            return null;
+        public static T ConvertTo<T>(this string json)
+        {
+            var jObj = JsonObject.Parse(json);
+
+            var type = TypesImplementingInterface(typeof(T)).FirstOrDefault(o => PropertyAllMatched(o, jObj));
+
+            var obj = typeof(StringExtensions)
+                         .GetMethod("FromJson", BindingFlags.Static | BindingFlags.Public)
+                         .MakeGenericMethod(type)
+                         .Invoke(null, new object[] { json });
+
+            return (T)obj;
         }
 
         private static bool PropertyAllMatched(Type type, JsonObject obj)
@@ -34,7 +40,7 @@ namespace WpfApplication4.Model
             var a = type.GetProperties(BindingFlags.Public | BindingFlags.Instance).Select(o => o.Name).ToArray();
             var b = obj.Keys;
 
-            bool result = a.Union(b).Count() == a.Count();
+            var result = a.Union(b).Count() == a.Count();
             return result;
         }
     }
@@ -56,15 +62,6 @@ namespace WpfApplication4.Model
             get { return _Numerator; }
             set { this.RaiseAndSetIfChanged(x => x.Numerator, value); }
         }
-
-        public string Unit { get { return _Unit; } set { this.RaiseAndSetIfChanged(x => x.Unit, value); } }
-    }
-
-    public class PieceDescription : ReactiveObject, IEvaluationItemDescription
-    {
-        private string _Title;
-        private string _Unit;
-        public string Title { get { return _Title; } set { this.RaiseAndSetIfChanged(x => x.Title, value); } }
 
         public string Unit { get { return _Unit; } set { this.RaiseAndSetIfChanged(x => x.Unit, value); } }
     }

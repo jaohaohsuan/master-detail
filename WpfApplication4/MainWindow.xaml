@@ -63,11 +63,38 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                        <StackPanel>
+
+                        <StackPanel  DockPanel.Dock="Top">
                             <TextBlock Text="{Binding Name}" />
                             <TextBlock Text="{Binding StatisticalWay}" Margin="0 10" />
-                            <TextBlock Text="{Binding Formula}" Margin="0 0 0 10" TextWrapping="Wrap" />
+                            <!--<TextBlock Text="{Binding Formula}" Margin="0 0 0 10" TextWrapping="Wrap" />-->
                         </StackPanel>
+
+                        <ContentControl Content="{Binding FormulaParams}">
+                            <ContentControl.Resources>
+                                <DataTemplate DataType="{x:Type model:LinearFormulaParams}">
+                                    <StackPanel>
+                                        <TextBlock Text="Linear"/>
+                                        <TextBlock Text="{Binding Scale}"/>
+                                        <TextBlock Text="{Binding BaseIndicator}"/>
+                                        <TextBlock Text="{Binding BaseScore}"/>
+                                        <TextBlock Text="{Binding IncreaseStepScore}"/>
+                                        <TextBlock Text="{Binding DecreaseStepScore}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type model:SlideFormulaParams}">
+                                    <StackPanel>
+                                        <TextBlock Text="Slide"/>
+                                        <TextBlock Text="{Binding Scale}"/>
+                                        <TextBlock Text="{Binding BaseIndicator}"/>
+                                        <TextBlock Text="{Binding BaseScore}"/>
+                                        <TextBlock Text="{Binding StepScore}"/>
+                                        <TextBlock Text="{Binding StartIndicator}"/>
+                                        <TextBlock Text="{Binding FinalIndicator}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ContentControl.Resources>
+                        </ContentControl>
 
                     </DockPanel>
                 </DataTemplate>
