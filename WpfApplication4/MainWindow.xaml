@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:wpfApplication4="clr-namespace:WpfApplication4"
         xmlns:viewModels="clr-namespace:WpfApplication4.ViewModels"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+        xmlns:model="clr-namespace:WpfApplication4.Model"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -89,6 +90,24 @@
                         <StackPanel>
                             <telerik:RadWatermarkTextBox WatermarkContent="Name" Text="{Binding Name}" />
                             <TextBlock Text="{Binding StatisticalWay}" Margin="0 10" />
+                            <ContentControl Content="{Binding Description}">
+                                <ContentControl.Resources>
+                                    <DataTemplate DataType="{x:Type model:RatioDescription}">
+                                        <StackPanel>
+                                            <TextBox Text="{Binding Unit}"/>
+                                            <TextBox Text="{Binding Denominator}"/>
+                                            <TextBox Text="{Binding Numerator}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                    <DataTemplate DataType="{x:Type model:PieceDescription}">
+                                        <StackPanel>
+                                            <TextBox Text="{Binding Unit}"/>
+                                            <TextBox Text="{Binding Title}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ContentControl.Resources>
+                            </ContentControl>
+                            
                             <ComboBox ItemsSource="{Binding SetFormulaOptions}"
                                       SelectedItem="{Binding SelectedFormula}" DisplayMemberPath="Name" />
                             <ContentControl Content="{Binding SelectedFormula}">

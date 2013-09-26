@@ -9,6 +9,7 @@ namespace WpfApplication4.ViewModels
     public class ItemViewModel : ReactiveObject
     {
         private bool _IsEditing;
+        private IEvaluationItemDescription _Description;
 
         public ItemViewModel()
         {
@@ -29,6 +30,12 @@ namespace WpfApplication4.ViewModels
             {
                 this.RaiseAndSetIfChanged(x => x.IsEditing, value);
             }
+        }
+
+        public IEvaluationItemDescription Description
+        {
+            get { return _Description; }
+            set { this.RaiseAndSetIfChanged(x => x.Description, value); }
         }
 
         public ObservableCollection<HyperCommand> Operations { get; set; }

@@ -131,6 +131,8 @@
     <Compile Include="HyperCommand.cs" />
     <Compile Include="Model\EvaluationItemTitle.cs" />
     <Compile Include="Model\GetEvaluationItem.cs" />
+    <Compile Include="Model\RatioDescription.cs" />
+    <Compile Include="Model\UpateRequestBody.cs" />
     <Compile Include="ViewModels\FormulaViewModel.cs" />
     <Compile Include="ViewModels\ItemEditViewModel.cs" />
     <Compile Include="ViewModels\ItemViewModel.cs" />

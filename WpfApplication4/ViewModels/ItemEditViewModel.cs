@@ -6,6 +6,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using Grandsys.Wfm.Services.Outsource.ServiceModel;
 using ReactiveUI;
+using ServiceStack.Text;
 using WpfApplication4.Model;
 
 namespace WpfApplication4.ViewModels
@@ -13,7 +14,7 @@ namespace WpfApplication4.ViewModels
     public class ItemEditViewModel : ItemViewModel
     {
         private readonly FormulaViewModel _SelectedFormula;
-        private readonly UpdateEvaluationItem _updateValues;
+        private readonly UpateRequestBody _updateValues;
         private string _name;
 
         public ItemEditViewModel(ResponseEvaluationItem model)
@@ -22,11 +23,20 @@ namespace WpfApplication4.ViewModels
             _name = model.Name;
             StatisticalWay = model.StatisticalWay;
 
+            Description = model.Description.To();
+            
             var obsvr = Observer.Create<FormulaInfo>(o =>
             {
                 if (_updateValues == null)
                     return;
                 _updateValues.Formula = o;
+            });
+
+            Observable.FromEventPattern<PropertyChangedEventArgs>(Description, "PropertyChanged").Select(args => args.Sender).OfType<IEvaluationItemDescription>().Subscribe(o =>
+            {
+                if (_updateValues == null)
+                    return;
+                _updateValues.Description = o;
             });
 
 
@@ -57,13 +67,14 @@ namespace WpfApplication4.ViewModels
                 .Select(o => o == null ? null : o.ToValue())
                 .Subscribe(obsvr);
 
+
             IsEditing = true;
-            _updateValues = new UpdateEvaluationItem();
+            _updateValues = new UpateRequestBody();
         }
 
         public IEnumerable<FormulaViewModel> SetFormulaOptions { get; set; }
 
-        public UpdateEvaluationItem UpdateValues { get { return _updateValues; } }
+        public UpateRequestBody UpdateValues { get { return _updateValues; } }
 
         public override string Name
         {
@@ -81,7 +92,7 @@ namespace WpfApplication4.ViewModels
             set { this.RaiseAndSetIfChanged(x => x.SelectedFormula, value); }
         }
 
-        private void WriteToRequest(Action<UpdateEvaluationItem> set)
+        private void WriteToRequest(Action<UpateRequestBody> set)
         {
             if (UpdateValues != null)
                 set(UpdateValues);

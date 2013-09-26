@@ -6,6 +6,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceHost;
+using ServiceStack.Text;
 using Telerik.Windows.Controls;
 using System.Linq;
 using WpfApplication4.Model;
@@ -36,7 +37,7 @@ namespace WpfApplication4.ViewModels
             var viewModelSource = new BehaviorSubject<ItemViewModel>(new UndefinedViewModel());
             viewModelSource.ToProperty(this, x => x.CurrentViewModel);
 
-            _client = new JsonServiceClient("http://localhost:1678/");
+            _client = new JsonServiceClient("http://localhost:35138/");
             GetAll = new ReactiveAsyncCommand();
             New = new ReactiveAsyncCommand();
 
