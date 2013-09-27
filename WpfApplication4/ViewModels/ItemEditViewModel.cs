@@ -39,7 +39,7 @@ namespace WpfApplication4.ViewModels
             });
 
 
-            SetFormulaOptions = model.SetFormulaOptions.Select(o =>
+           /* SetFormulaOptions = model.SetFormulaOptions.Select(o =>
             {
                 FormulaViewModel vm;
                 if (o.Name == "Linear")
@@ -55,12 +55,19 @@ namespace WpfApplication4.ViewModels
                     .Subscribe(obsvr);
 
                 return vm;
-            }).ToList();
+            }).ToList();*/
 
-            if (!string.IsNullOrEmpty(model.Formula))
+
+
+
+            FormulaParams = model.FormulaParams.ConvertTo<IFormulaParams>();
+
+            if (FormulaParams != null)
             {
-                _SelectedFormula = SetFormulaOptions.FirstOrDefault(o => model.Formula.ToLower().Contains(o.Name.ToLower()));
+                _SelectedFormula = SetFormulaOptions.FirstOrDefault(o => FormulaParams != null && FormulaParams.GetType().Name.ToLower().Contains(o.Name.ToLower()));
             }
+
+           
 
             this.WhenAny(x => x.SelectedFormula, x => x.Value)
                 .Select(o => o == null ? null : o.ToValue())

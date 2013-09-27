@@ -21,7 +21,7 @@ namespace WpfApplication4.ViewModels
         public virtual string Name { get; set; }
 
         public string StatisticalWay { get; set; }
-        public string Formula { get; set; }
+        
         public IFormulaParams FormulaParams { get; set; }
 
 
@@ -65,7 +65,6 @@ namespace WpfApplication4.ViewModels
                 Id = model.Id,
                 Name = model.Name,
                 StatisticalWay = model.StatisticalWay,
-                Formula = model.Formula,
                 FormulaParams = model.FormulaParams.ConvertTo<IFormulaParams>()
             };
         }

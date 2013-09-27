@@ -21,7 +21,7 @@ namespace WpfApplication4.Model
         public string StatisticalWay { get; set; }
 
         public string FormulaParams { get; set; }
-        public string Formula { get; set; }
+        
 
 
         public string Description { get; set; }
@@ -29,6 +29,6 @@ namespace WpfApplication4.Model
 
         public IEnumerable<Link> Links { get; set; }
 
-        public IEnumerable<Link> SetFormulaOptions { get; set; }
+        public IEnumerable<string> FormulaOptions { get; set; }
     }
 }
