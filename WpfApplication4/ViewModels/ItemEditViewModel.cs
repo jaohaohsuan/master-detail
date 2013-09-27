@@ -7,6 +7,7 @@ using System.Reactive.Linq;
 using System.Reflection;
 using Grandsys.Wfm.Services.Outsource.ServiceModel;
 using ReactiveUI;
+using ServiceStack.Common;
 using ServiceStack.Text;
 using WpfApplication4.Model;
 
@@ -14,7 +15,7 @@ namespace WpfApplication4.ViewModels
 {
     public class ItemEditViewModel : ItemViewModel
     {
-        private readonly FormulaViewModel _SelectedFormula;
+        private readonly IFormulaParams _SelectedFormula;
         private readonly UpateRequestBody _updateValues;
         private string _name;
 
@@ -38,47 +39,34 @@ namespace WpfApplication4.ViewModels
                 _updateValues.Description = o;
             });
 
-
-           /* SetFormulaOptions = model.SetFormulaOptions.Select(o =>
+           SetFormulaOptions  = model.FormulaOptions.Select(o =>
             {
-                FormulaViewModel vm;
-                if (o.Name == "Linear")
-                    vm = new LinearFormulaViewModel(o.Request);
-                else if (o.Name == "Slide")
-                    vm = new SlideFormulaViewModel(o.Request);
-                else
-                    vm = new UnsupportFormulaViewModel();
-                vm.Name = o.Name;
-
-                Observable.FromEventPattern<PropertyChangedEventArgs>(vm, "PropertyChanged").Select(args => args.Sender)
-                    .OfType<FormulaViewModel>().Select(v => v.ToValue())
-                    .Subscribe(obsvr);
+                var vm = o.ConvertTo<IFormulaParams>();
+                if (vm != null)
+                    Observable.FromEventPattern<PropertyChangedEventArgs>(vm, "PropertyChanged")
+                        .Select(args => args.Sender)
+                        .OfType<IFormulaParams>().Select(p => new FormulaInfo().PopulateWith(p))
+                        .Subscribe(obsvr);
 
                 return vm;
-            }).ToList();*/
-
-
-
+            }).ToList();
 
             FormulaParams = model.FormulaParams.ConvertTo<IFormulaParams>();
 
             if (FormulaParams != null)
             {
-                _SelectedFormula = SetFormulaOptions.FirstOrDefault(o => FormulaParams != null && FormulaParams.GetType().Name.ToLower().Contains(o.Name.ToLower()));
+                _SelectedFormula = SetFormulaOptions.FirstOrDefault(o => FormulaParams != null && FormulaParams.GetType() == o.GetType());
             }
 
-           
-
             this.WhenAny(x => x.SelectedFormula, x => x.Value)
-                .Select(o => o == null ? null : o.ToValue())
+                .Select(o => o == null ? null : new FormulaInfo().PopulateWith(o))
                 .Subscribe(obsvr);
-
-
+            
             IsEditing = true;
             _updateValues = new UpateRequestBody();
         }
 
-        public IEnumerable<FormulaViewModel> SetFormulaOptions { get; set; }
+        public IEnumerable<IFormulaParams> SetFormulaOptions { get; set; }
 
         public UpateRequestBody UpdateValues { get { return _updateValues; } }
 
@@ -92,7 +80,7 @@ namespace WpfApplication4.ViewModels
             }
         }
 
-        public FormulaViewModel SelectedFormula
+        public IFormulaParams SelectedFormula
         {
             get { return _SelectedFormula; }
             set { this.RaiseAndSetIfChanged(x => x.SelectedFormula, value); }

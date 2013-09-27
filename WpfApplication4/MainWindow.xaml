@@ -131,10 +131,19 @@
                             </ContentControl>
 
                             <ComboBox ItemsSource="{Binding SetFormulaOptions}"
-                                      SelectedItem="{Binding SelectedFormula}" DisplayMemberPath="Name" />
+                                      SelectedItem="{Binding SelectedFormula}">
+                                <ComboBox.Resources>
+                                    <DataTemplate DataType="{x:Type model:LinearFormulaParams}">
+                                        <TextBlock Text="Linear"/>
+                                    </DataTemplate>
+                                    <DataTemplate DataType="{x:Type model:SlideFormulaParams}">
+                                        <TextBlock Text="Slide"/>
+                                    </DataTemplate>
+                                </ComboBox.Resources>
+                            </ComboBox>
                             <ContentControl Content="{Binding SelectedFormula}">
                                 <ContentControl.Resources>
-                                    <DataTemplate DataType="{x:Type viewModels:LinearFormulaViewModel}">
+                                    <DataTemplate DataType="{x:Type model:LinearFormulaParams}">
                                         <StackPanel>
                                             <telerik:RadNumericUpDown Value="{Binding BaseIndicator}" />
                                             <telerik:RadNumericUpDown Value="{Binding BaseScore}" />
@@ -143,7 +152,7 @@
                                             <telerik:RadNumericUpDown Value="{Binding DecreaseStepScore}" />
                                         </StackPanel>
                                     </DataTemplate>
-                                    <DataTemplate DataType="{x:Type viewModels:SlideFormulaViewModel}">
+                                    <DataTemplate DataType="{x:Type model:SlideFormulaParams}">
                                         <StackPanel>
                                             <telerik:RadNumericUpDown Value="{Binding BaseIndicator}" />
                                             <telerik:RadNumericUpDown Value="{Binding BaseScore}" />
