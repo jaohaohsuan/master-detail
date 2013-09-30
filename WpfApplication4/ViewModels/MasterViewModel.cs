@@ -45,12 +45,12 @@ namespace WpfApplication4.ViewModels
 
             IObservable<EvaluationItemTitle> selectedItemChanged = this.WhenAny(x => x.SelectedItem, x => x.Value);
 
-            IObservable<ResponseEvaluationItem> getEvaluationItem = selectedItemChanged.Throttle(
+            IObservable<EvaluationItem> getEvaluationItem = selectedItemChanged.Throttle(
                 TimeSpan.FromMilliseconds(300)).ObserveOn(Scheduler.Default)
                 .Where(x => x != null && x.Id != CurrentViewModel.Id)
                 .Select(o => _client.Get(new GetEvaluationItem(o.Id)));
 
-            IObservable<ResponseEvaluationItem> howToNew = New.RegisterAsyncFunction(_ =>
+            IObservable<EvaluationItem> howToNew = New.RegisterAsyncFunction(_ =>
             {
                 EvaluationItemsCreationWays response = _client.Get(new EvaluationItemsCreationWays());
                 var links = new List<Link>(response.Links)
@@ -58,7 +58,7 @@ namespace WpfApplication4.ViewModels
                     new Link {Name = "Discard"}
                 };
 
-                return new ResponseEvaluationItem {Links = links};
+                return new EvaluationItem {Links = links};
             });
 
             GetAll.RegisterAsyncFunction(
@@ -70,9 +70,9 @@ namespace WpfApplication4.ViewModels
                 .Throttle(TimeSpan.FromMilliseconds(200))
                 .Subscribe(o => { SelectedItem = o.FirstOrDefault(a => Equals(a.Id, CurrentViewModel.Id)); });
 
-            IObserver<ResponseEvaluationItem> obsvr = null;
+            IObserver<EvaluationItem> obsvr = null;
 
-            obsvr = Observer.Create<ResponseEvaluationItem>(o =>
+            obsvr = Observer.Create<EvaluationItem>(o =>
             {
                 if (o == null)
                 {

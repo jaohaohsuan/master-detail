@@ -2,7 +2,7 @@ using ServiceStack.ServiceHost;
 
 namespace WpfApplication4.Model
 {
-    public class GetEvaluationItem : IReturn<ResponseEvaluationItem>
+    public class GetEvaluationItem : IReturn<EvaluationItem>
     {
         public GetEvaluationItem(string id)
         {

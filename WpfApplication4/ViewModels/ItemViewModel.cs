@@ -21,7 +21,7 @@ namespace WpfApplication4.ViewModels
         public virtual string Name { get; set; }
 
         public string StatisticalWay { get; set; }
-        
+
         public IFormulaParams FormulaParams { get; set; }
 
 
@@ -42,12 +42,12 @@ namespace WpfApplication4.ViewModels
 
         public ObservableCollection<HyperCommand> Operations { get; set; }
 
-        public static ItemViewModel Create(ResponseEvaluationItem model)
+        public static ItemViewModel Create(EvaluationItem model)
         {
             if (model == null)
                 return new UndefinedViewModel();
             if (string.IsNullOrEmpty(model.Id))
-                return new NewItemViewModel { Name = "unnamed" };
+                return new NewItemViewModel();
             if (model.Status == "deleted")
             {
                 return new DeletedViewModel { Id = model.Id, Name = model.Name, StatisticalWay = model.StatisticalWay };

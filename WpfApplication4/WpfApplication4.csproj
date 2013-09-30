@@ -38,7 +38,7 @@
   <ItemGroup>
     <Reference Include="Grandsys.Wfm.Services.Outsource.ServiceModel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Evaluation.DTOs.1.1.2\lib\net40\Grandsys.Wfm.Services.Outsource.ServiceModel.dll</HintPath>
+      <HintPath>..\packages\Evaluation.DTOs.1.1.4\lib\net40\Grandsys.Wfm.Services.Outsource.ServiceModel.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Threading.Tasks">
       <HintPath>..\packages\Microsoft.Bcl.Async.1.0.16\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
@@ -142,7 +142,7 @@
     <Compile Include="ViewModels\ItemEditViewModel.cs" />
     <Compile Include="ViewModels\ItemViewModel.cs" />
     <Compile Include="ViewModels\MasterViewModel.cs" />
-    <Compile Include="Model\ResponseEvaluationItem.cs" />
+    <Compile Include="Model\EvaluationItem.cs" />
     <Compile Include="ViewModels\NewItemViewModel.cs" />
     <Compile Include="ViewModels\UndefinedViewModel.cs" />
     <Page Include="MainWindow.xaml">

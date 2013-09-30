@@ -19,7 +19,7 @@ namespace WpfApplication4.ViewModels
         private readonly UpateRequestBody _updateValues;
         private string _name;
 
-        public ItemEditViewModel(ResponseEvaluationItem model)
+        public ItemEditViewModel(EvaluationItem model)
         {
             Id = model.Id;
             _name = model.Name;

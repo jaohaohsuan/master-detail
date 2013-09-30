@@ -4,9 +4,9 @@ using ServiceStack.Text;
 
 namespace WpfApplication4.Model
 {
-    public class ResponseEvaluationItem
+    public class EvaluationItem
     {
-        public ResponseEvaluationItem()
+        public EvaluationItem()
         {
             this.Links = new List<Link>();
         }
