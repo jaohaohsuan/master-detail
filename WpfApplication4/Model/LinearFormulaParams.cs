@@ -36,6 +36,6 @@ namespace WpfApplication4.Model
             set { this.RaiseAndSetIfChanged(x => x.DecreaseStepScore, value); }
         }
 
-        public string Type { get { return "linear"; } }
+        public string Type { get; set; }
     }
 }

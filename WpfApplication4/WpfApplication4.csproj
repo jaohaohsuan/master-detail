@@ -77,7 +77,7 @@
     </Reference>
     <Reference Include="ServiceStack.Text, Version=3.9.59.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.Text.3.9.62\lib\net35\ServiceStack.Text.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.Text.3.9.63\lib\net35\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -133,6 +133,7 @@
     <Compile Include="Model\GetEvaluationItem.cs" />
     <Compile Include="Model\IEvaluationItemDescription.cs" />
     <Compile Include="Model\IFormulaParams.cs" />
+    <Compile Include="Model\JsonToObjectExtensions.cs" />
     <Compile Include="Model\LinearFormulaParams.cs" />
     <Compile Include="Model\PieceDescription.cs" />
     <Compile Include="Model\RatioDescription.cs" />

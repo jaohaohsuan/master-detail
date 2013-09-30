@@ -6,11 +6,11 @@ namespace WpfApplication4.Model
     {
         private double _BaseIndicator;
         private double _BaseScore;
-        private double _Scale;
         private double _FinalIndicator;
+        private double _Scale;
         private double _StartIndicator;
         private double _StepScore;
-        
+
         public double BaseIndicator
         {
             get { return _BaseIndicator; }
@@ -24,7 +24,7 @@ namespace WpfApplication4.Model
         }
 
         public double Scale { get { return _Scale; } set { this.RaiseAndSetIfChanged(x => x.Scale, value); } }
-        
+
         public double StepScore
         {
             get { return _StepScore; }
@@ -43,6 +43,6 @@ namespace WpfApplication4.Model
             set { this.RaiseAndSetIfChanged(x => x.FinalIndicator, value); }
         }
 
-        public string Type { get { return "slide"; }}
+        public string Type { get; set; }
     }
 }

@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using Grandsys.Wfm.Services.Outsource.ServiceModel;
+using ServiceStack.Text;
 
 namespace WpfApplication4.Model
 {
-    
-
     public class ResponseEvaluationItem
     {
         public ResponseEvaluationItem()
@@ -20,15 +19,12 @@ namespace WpfApplication4.Model
 
         public string StatisticalWay { get; set; }
 
-        public string FormulaParams { get; set; }
-        
+        public Dictionary<string,string> FormulaParams { get; set; }
 
-
-        public string Description { get; set; }
-
+        public Dictionary<string, string> Description { get; set; }
 
         public IEnumerable<Link> Links { get; set; }
 
-        public IEnumerable<string> FormulaOptions { get; set; }
+        public IEnumerable<Dictionary<string,string>> FormulaOptions { get; set; }
     }
 }
