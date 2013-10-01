@@ -36,9 +36,15 @@ namespace WpfApplication4.ViewModels
             var viewModelSource = new BehaviorSubject<ItemViewModel>(new UndefinedViewModel());
             viewModelSource.ToProperty(this, x => x.CurrentViewModel);
 
-            _client = new JsonServiceClient("http://localhost:35138/");
+            _client = new JsonServiceClient("http://grandsysapi.azurewebsites.net/");
 
-            
+#if DEBUG
+            _client = new JsonServiceClient("http://localhost:35138/");
+#endif
+
+
+
+
 
             GetAll = new ReactiveAsyncCommand();
             New = new ReactiveAsyncCommand();

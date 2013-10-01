@@ -2,5 +2,6 @@
 {
     public interface IFormulaParams
     {
+        string Type { get; }
     }
 }
