@@ -134,10 +134,21 @@
     <Compile Include="Model\IEvaluationItemDescription.cs" />
     <Compile Include="Model\IFormulaParams.cs" />
     <Compile Include="Model\JsonToObjectExtensions.cs" />
-    <Compile Include="Model\LinearFormulaParams.cs" />
-    <Compile Include="Model\PieceDescription.cs" />
-    <Compile Include="Model\RatioDescription.cs" />
-    <Compile Include="Model\SlideFormulaParams.cs" />
+    <Compile Include="Model\LinearFormulaParams.cs">
+      <DependentUpon>IFormulaParams.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PieceDescription.cs">
+      <DependentUpon>IEvaluationItemDescription.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\RatioDescription.cs">
+      <DependentUpon>IEvaluationItemDescription.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SlideFormulaParams.cs">
+      <DependentUpon>IFormulaParams.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\UnknownFormulaParams.cs">
+      <DependentUpon>IFormulaParams.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\UpateRequestBody.cs" />
     <Compile Include="ViewModels\ItemEditViewModel.cs" />
     <Compile Include="ViewModels\ItemViewModel.cs" />
