@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Grandsys.Wfm.Services.Outsource.ServiceModel;
-using ServiceStack.Text;
 
 namespace WpfApplication4.Model
 {
@@ -8,7 +7,7 @@ namespace WpfApplication4.Model
     {
         public EvaluationItem()
         {
-            this.Links = new List<Link>();
+            Links = new List<Link>();
         }
 
         public string Id { get; set; }
@@ -19,12 +18,12 @@ namespace WpfApplication4.Model
 
         public string StatisticalWay { get; set; }
 
-        public Dictionary<string,string> FormulaParams { get; set; }
+        public Dictionary<string, string> FormulaParams { get; set; }
 
         public Dictionary<string, string> Description { get; set; }
 
         public IEnumerable<Link> Links { get; set; }
 
-        public IEnumerable<Dictionary<string,string>> FormulaOptions { get; set; }
+        public IEnumerable<Dictionary<string, string>> FormulaOptions { get; set; }
     }
 }

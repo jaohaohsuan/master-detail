@@ -34,77 +34,69 @@ namespace WpfApplication4.ViewModels
         public MasterViewModel()
         {
             var viewModelSource = new BehaviorSubject<ItemViewModel>(new UndefinedViewModel());
+            var hyperVm = new Subject<Tuple<IEnumerable<Link>, ItemViewModel>>();
+
             viewModelSource.ToProperty(this, x => x.CurrentViewModel);
 
             _client = new JsonServiceClient("http://grandsysapi.azurewebsites.net/");
 
 #if DEBUG
-            _client = new JsonServiceClient("http://localhost:35138/");
+            //_client = new JsonServiceClient("http://localhost:35138/");
 #endif
-
-
-
-
 
             GetAll = new ReactiveAsyncCommand();
             New = new ReactiveAsyncCommand();
 
-            IObservable<EvaluationItemTitle> selectedItemChanged = this.WhenAny(x => x.SelectedItem, x => x.Value);
+            var selectedItemChanged = this.WhenAny(x => x.SelectedItem, x => x.Value);
 
-            IObservable<EvaluationItem> getEvaluationItem = selectedItemChanged.Throttle(
+            var getEvaluationItem = selectedItemChanged.Throttle(
                 TimeSpan.FromMilliseconds(300)).ObserveOn(Scheduler.Default)
                 .Where(x => x != null && x.Id != CurrentViewModel.Id)
                 .Select(o => _client.Get(new GetEvaluationItem(o.Id)));
 
-            IObservable<EvaluationItem> howToNew = New.RegisterAsyncFunction(_ =>
+            New.RegisterAsyncFunction(_ =>
             {
-                EvaluationItemsCreationWays response = _client.Get(new EvaluationItemsCreationWays());
-                var links = new List<Link>(response.Links)
-                {
-                    new Link {Name = "Discard"}
-                };
+                var response = _client.Get(new EvaluationItemsCreationWays());
+                IEnumerable<Link> links = new List<Link>(response.Links) { new Link { Name = "Discard" } };
+                ItemViewModel vm = new NewItemViewModel();
+                return Tuple.Create(links, vm);
+            }).Subscribe(hyperVm);
 
-                return new EvaluationItem {Links = links};
-            });
-
-            GetAll.RegisterAsyncFunction(
-                _ => { return _client.Get(new EvaluationItems()).ToObservable().CreateCollection(); })
-                .ToProperty(this, x => x.Items);
+            GetAll.RegisterAsyncFunction(_ => _client.Get(new EvaluationItems()).ToObservable().CreateCollection()).ToProperty(this, x => x.Items);
 
             this.WhenAny(x => x.Items, x => x.Value)
                 .Where(o => o != null)
                 .Throttle(TimeSpan.FromMilliseconds(200))
                 .Subscribe(o => { SelectedItem = o.FirstOrDefault(a => Equals(a.Id, CurrentViewModel.Id)); });
 
-            IObserver<EvaluationItem> obsvr = null;
-
-            obsvr = Observer.Create<EvaluationItem>(o =>
+            var responseObsvr = Observer.Create<EvaluationItem>(o =>
             {
                 if (o == null)
                 {
                     viewModelSource.OnNext(new UndefinedViewModel());
                     return;
                 }
+                hyperVm.OnNext(Tuple.Create(o.Links, ItemViewModel.Create(o)));
+            });
 
-                ItemViewModel vm = ItemViewModel.Create(o);
-
-                foreach (Link link in o.Links)
+            hyperVm.Subscribe(tuple =>
+            {
+                var links = tuple.Item1;
+                var vm = tuple.Item2;
+                foreach (var link in links)
                 {
                     var cmd = new HyperCommand(_client, link);
                     if (link.Method != "GET")
                     {
                         cmd.Response.Throttle(TimeSpan.FromMilliseconds(500)).Subscribe(_ => { GetAll.Execute(null); });
                     }
-                    cmd.Response.Subscribe(obsvr);
+                    cmd.Response.Subscribe(responseObsvr);
                     vm.Operations.Add(cmd);
                 }
-
-                vm.OperationAdded();
                 viewModelSource.OnNext(vm);
             });
 
-            howToNew.Subscribe(obsvr);
-            getEvaluationItem.Subscribe(obsvr);
+            getEvaluationItem.Subscribe(responseObsvr);
         }
 
         public ItemViewModel CurrentViewModel { get { return _CurrentViewModel.Value; } }

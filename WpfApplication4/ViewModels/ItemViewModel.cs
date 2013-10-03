@@ -68,9 +68,5 @@ namespace WpfApplication4.ViewModels
                 FormulaParams = model.FormulaParams.ConvertTo<IFormulaParams>()
             };
         }
-
-        public virtual void OperationAdded()
-        {
-        }
     }
 }
